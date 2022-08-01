@@ -1,12 +1,14 @@
 /// @description
 
 
-#region ///destruir asteroide con brisas y crear asteroides
+#region ///destruir balls y crear balls
 
 	
 if(sprite_index ==spr_ball_azul){
 	repeat(2){
+		//crear ball
 		var new_ball = instance_create_layer(x,y,"Instances",obj_ball);
+		//cambiar el sprite del objeto ball
 		new_ball.sprite_index = spr_ball_azul_small;
 		
 	}
@@ -22,6 +24,6 @@ if(sprite_index ==spr_ball_azul){
 
 
 #endregion
-
+// crear efecto
 if(sprite_index== spr_ball_azul or sprite_index==spr_ball_azul_small)	effect_create_below(ef_firework,x,y,2,c_blue);
 if(sprite_index== spr_ball_roja or sprite_index==spr_ball_roja_small)	effect_create_below(ef_firework,x,y,2,c_red);
