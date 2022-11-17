@@ -1,5 +1,5 @@
 /// @description
-
+global.contadorBurbujasDestruidas+=1;
 
 #region ///destruir balls y crear balls
 
@@ -22,8 +22,11 @@ if(sprite_index ==spr_ball_azul){
 
 }
 
-
-#endregion
 // crear efecto
 if(sprite_index== spr_ball_azul or sprite_index==spr_ball_azul_small)	effect_create_below(ef_firework,x,y,2,c_blue);
 if(sprite_index== spr_ball_roja or sprite_index==spr_ball_roja_small)	effect_create_below(ef_firework,x,y,2,c_red);
+#endregion
+
+//effect_clear();
+
+//room_instance_clear()

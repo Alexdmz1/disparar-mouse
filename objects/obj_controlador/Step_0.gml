@@ -2,64 +2,79 @@
 
 switch(room){
 	case rm_start:	
+		global.escribir=false;		
+		break;
+	case rm_nivel1:
+	case rm_nivel2:
+	case rm_nivel3:
+	case rm_nivel4:
+
+		/*
+		if !(global.pausa)
+		{
+			with (all)
+			{
+				event_perform(ev_other,ev_user1)
+			}
+		}*/
+		cursor_sprite = spr_CustomCursor;
+		global.escribir=false;
+		keyboard_string = "";
+		if(global.Score>global.highscore){
+
+
+			global.highscore=global.Score;
+
+		}
+		else
+		{
+			global.highscore=global.highscore;
+		}
+		
+		if(instance_number(obj_ball)>20)
+		{
+			instance_destroy(obj_ball);
+		}
+
+	// si pierde ir al room game over
+		if(instance_number(obj_player)<=0 || global.time<=0){
+			//global.time=300;
+			//lives=3;
+			global.maxScore=10;
+			//highscore_add(global.name,global.Score);
+			room_goto(rm_puntos);
+		}
+
+		break;
+		
+		
+	case rm_puntos:
+	
+			// PERMIIR ESCRIBIR 
+		global.name = keyboard_string;
+			//límites de escritura
 		if string_length(keyboard_string) > 10
 		{
 			keyboard_string = string_copy(keyboard_string, 1, 10);
 		}
-		array_insert(global.arreglo[0],0,keyboard_string);	
-		break;
-	case rm_game:
-	//no escribir en este room
-		keyboard_string = "";
-	// ir al room win
-		if (score>=96){
-			
-			global.highscore=score;
-			array_insert(global.arreglo[1],0,string(global.highscore)); // probando score en forma de arreglo
-			highscore_add(global.arreglo[0][0],global.arreglo[1][0]);
-
-			room_goto(rm_win);
-		}
-	// si pierde ir al room game over
-		if((instance_number(obj_player)<=0)){
-			
-			
-			global.highscore=score;
-			array_insert(global.arreglo[1],0,string(global.highscore)); // probando score en forma de arreglo
-			highscore_add(global.arreglo[0][0],global.arreglo[1][0]);
-
-			room_goto(rm_gameover);
-			}
-		// highscore
-		if(score>global.highscore){
-			
-			global.highscore=score;
-			ini_open("Highscore.ini");
-			ini_write_real("Highscore","highscore",global.highscore);
-			ini_close();
-			
-		}else{
-			global.highscore=global.highscore;
-		}
-		
-		array_sort(global.arreglo[1], function(elm1, elm2) //mejorar el orden del arrglo
+		global.escribir=true;
+		if(global.metasDestruidas>=4){
+			global.juegoSuperado=true;
+		}else
 		{
-		return elm2 - elm1;
-		});
+			global.juegoSuperado=false;
+		}
 		
+		if(keyboard_check_pressed(vk_enter))
+		{
+			
+			//AGREGAR NOMBRE Y SCORE A LA TABLA PUNTUACIÓN
+			highscore_add(global.name,global.Score);
+			alarm[2]= 2*room_speed;
+			
+		}
+		limpiar_score();
 		break;
-
-		case rm_win:		
-		case rm_gameover:
-			//no escribir en este room
-			keyboard_string = "";
-			if(keyboard_check_pressed(ord("C"))){
-				highscore_clear();
-				ini_open("Highscore.ini");
-				global.highscore = ini_read_real("Highscore","highscore",0);
-				ini_key_delete("Highscore","highscore");
-				ini_close();	
-				global.highscore=0;
-			}
-			break;
 }
+
+
